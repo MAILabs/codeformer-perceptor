@@ -33,9 +33,12 @@ pip install codeformer-perceptor
 ## Usage
 
 ```python
+from PIL import Image
 from codeformer import CodeFormer
 
 model = CodeFormer().cuda()
+
+image = Image.open("test.jpg")
 restored_image = model(image)
 ```
 
