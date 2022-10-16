@@ -126,3 +126,4 @@ results/
 dlib/
 *_old*
 
+tests/output.png
