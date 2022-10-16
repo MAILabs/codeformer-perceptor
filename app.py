@@ -4,7 +4,8 @@ https://huggingface.co/spaces/sczhou/CodeFormer
 """
 
 import sys
-sys.path.append('CodeFormer')
+
+sys.path.append("CodeFormer")
 import os
 import cv2
 import torch
@@ -15,8 +16,8 @@ from torchvision.transforms.functional import normalize
 
 from basicsr.utils import imwrite, img2tensor, tensor2img
 from basicsr.utils.download_util import load_file_from_url
-from facelib.utils.face_restoration_helper import FaceRestoreHelper
-from facelib.utils.misc import is_gray
+from codeformer.facelib.utils.face_restoration_helper import FaceRestoreHelper
+from codeformer.facelib.utils.misc import is_gray
 from basicsr.archs.rrdbnet_arch import RRDBNet
 from basicsr.utils.realesrgan_utils import RealESRGANer
 
@@ -26,42 +27,69 @@ from basicsr.utils.registry import ARCH_REGISTRY
 os.system("pip freeze")
 
 pretrain_model_url = {
-    'codeformer': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth',
-    'detection': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/detection_Resnet50_Final.pth',
-    'parsing': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth',
-    'realesrgan': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/RealESRGAN_x2plus.pth'
+    "codeformer": "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth",
+    "detection": "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/detection_Resnet50_Final.pth",
+    "parsing": "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth",
+    "realesrgan": "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/RealESRGAN_x2plus.pth",
 }
 # download weights
-if not os.path.exists('CodeFormer/weights/CodeFormer/codeformer.pth'):
-    load_file_from_url(url=pretrain_model_url['codeformer'], model_dir='CodeFormer/weights/CodeFormer', progress=True, file_name=None)
-if not os.path.exists('CodeFormer/weights/facelib/detection_Resnet50_Final.pth'):
-    load_file_from_url(url=pretrain_model_url['detection'], model_dir='CodeFormer/weights/facelib', progress=True, file_name=None)
-if not os.path.exists('CodeFormer/weights/facelib/parsing_parsenet.pth'):
-    load_file_from_url(url=pretrain_model_url['parsing'], model_dir='CodeFormer/weights/facelib', progress=True, file_name=None)
-if not os.path.exists('CodeFormer/weights/realesrgan/RealESRGAN_x2plus.pth'):
-    load_file_from_url(url=pretrain_model_url['realesrgan'], model_dir='CodeFormer/weights/realesrgan', progress=True, file_name=None)
+if not os.path.exists("CodeFormer/weights/CodeFormer/codeformer.pth"):
+    load_file_from_url(
+        url=pretrain_model_url["codeformer"],
+        model_dir="CodeFormer/weights/CodeFormer",
+        progress=True,
+        file_name=None,
+    )
+if not os.path.exists("CodeFormer/weights/facelib/detection_Resnet50_Final.pth"):
+    load_file_from_url(
+        url=pretrain_model_url["detection"],
+        model_dir="CodeFormer/weights/facelib",
+        progress=True,
+        file_name=None,
+    )
+if not os.path.exists("CodeFormer/weights/facelib/parsing_parsenet.pth"):
+    load_file_from_url(
+        url=pretrain_model_url["parsing"],
+        model_dir="CodeFormer/weights/facelib",
+        progress=True,
+        file_name=None,
+    )
+if not os.path.exists("CodeFormer/weights/realesrgan/RealESRGAN_x2plus.pth"):
+    load_file_from_url(
+        url=pretrain_model_url["realesrgan"],
+        model_dir="CodeFormer/weights/realesrgan",
+        progress=True,
+        file_name=None,
+    )
 
 # download images
 torch.hub.download_url_to_file(
-    'https://replicate.com/api/models/sczhou/codeformer/files/fa3fe3d1-76b0-4ca8-ac0d-0a925cb0ff54/06.png',
-    '01.png')
+    "https://replicate.com/api/models/sczhou/codeformer/files/fa3fe3d1-76b0-4ca8-ac0d-0a925cb0ff54/06.png",
+    "01.png",
+)
 torch.hub.download_url_to_file(
-    'https://replicate.com/api/models/sczhou/codeformer/files/a1daba8e-af14-4b00-86a4-69cec9619b53/04.jpg',
-    '02.jpg')
+    "https://replicate.com/api/models/sczhou/codeformer/files/a1daba8e-af14-4b00-86a4-69cec9619b53/04.jpg",
+    "02.jpg",
+)
 torch.hub.download_url_to_file(
-    'https://replicate.com/api/models/sczhou/codeformer/files/542d64f9-1712-4de7-85f7-3863009a7c3d/03.jpg',
-    '03.jpg')
+    "https://replicate.com/api/models/sczhou/codeformer/files/542d64f9-1712-4de7-85f7-3863009a7c3d/03.jpg",
+    "03.jpg",
+)
 torch.hub.download_url_to_file(
-    'https://replicate.com/api/models/sczhou/codeformer/files/a11098b0-a18a-4c02-a19a-9a7045d68426/010.jpg',
-    '04.jpg')
+    "https://replicate.com/api/models/sczhou/codeformer/files/a11098b0-a18a-4c02-a19a-9a7045d68426/010.jpg",
+    "04.jpg",
+)
 torch.hub.download_url_to_file(
-    'https://replicate.com/api/models/sczhou/codeformer/files/7cf19c2c-e0cf-4712-9af8-cf5bdbb8d0ee/012.jpg',
-    '05.jpg')
+    "https://replicate.com/api/models/sczhou/codeformer/files/7cf19c2c-e0cf-4712-9af8-cf5bdbb8d0ee/012.jpg",
+    "05.jpg",
+)
+
 
 def imread(img_path):
     img = cv2.imread(img_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return img
+
 
 # set enhancer with RealESRGAN
 def set_realesrgan():
@@ -85,8 +113,9 @@ def set_realesrgan():
     )
     return upsampler
 
+
 upsampler = set_realesrgan()
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 codeformer_net = ARCH_REGISTRY.get("CodeFormer")(
     dim_embd=512,
     codebook_size=1024,
@@ -99,18 +128,19 @@ checkpoint = torch.load(ckpt_path)["params_ema"]
 codeformer_net.load_state_dict(checkpoint)
 codeformer_net.eval()
 
-os.makedirs('output', exist_ok=True)
+os.makedirs("output", exist_ok=True)
+
 
 def inference(image, background_enhance, face_upsample, upscale, codeformer_fidelity):
     """Run a single prediction on the model"""
-    try: # global try
+    try:  # global try
         # take the default setting for the demo
         has_aligned = False
         only_center_face = False
         draw_box = False
         detection_model = "retinaface_resnet50"
 
-        upscale = int(upscale) # covert type to int
+        upscale = int(upscale)  # covert type to int
         face_helper = FaceRestoreHelper(
             upscale,
             face_size=512,
@@ -130,13 +160,13 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
             img = cv2.resize(img, (512, 512), interpolation=cv2.INTER_LINEAR)
             face_helper.is_gray = is_gray(img, threshold=5)
             if face_helper.is_gray:
-                print('Grayscale input: True')
+                print("Grayscale input: True")
             face_helper.cropped_faces = [img]
         else:
             face_helper.read_image(img)
             # get face landmarks for each face
             num_det_faces = face_helper.get_face_landmarks_5(
-            only_center_face=only_center_face, resize=640, eye_dist_threshold=5
+                only_center_face=only_center_face, resize=640, eye_dist_threshold=5
             )
             print(f"\tdetect {num_det_faces} faces")
             # align and warp each face
@@ -190,13 +220,13 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
                 )
 
         # save restored img
-        save_path = f'output/out.png'
+        save_path = f"output/out.png"
         imwrite(restored_img, str(save_path))
 
         restored_img = cv2.cvtColor(restored_img, cv2.COLOR_BGR2RGB)
         return restored_img, save_path
     except Exception as error:
-        print('global exception', error)
+        print("global exception", error)
         return None, None
 
 
@@ -237,27 +267,35 @@ If you have any questions, please feel free to reach me out at <b>shangchenzhou@
 """
 
 demo = gr.Interface(
-    inference, [
+    inference,
+    [
         gr.inputs.Image(type="filepath", label="Input"),
         gr.inputs.Checkbox(default=True, label="Background_Enhance"),
         gr.inputs.Checkbox(default=True, label="Face_Upsample"),
         gr.inputs.Number(default=2, label="Rescaling_Factor"),
-        gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity: 0 for better quality, 1 for better identity')
-    ], [
+        gr.Slider(
+            0,
+            1,
+            value=0.5,
+            step=0.01,
+            label="Codeformer_Fidelity: 0 for better quality, 1 for better identity",
+        ),
+    ],
+    [
         gr.outputs.Image(type="numpy", label="Output"),
-        gr.outputs.File(label="Download the output")
+        gr.outputs.File(label="Download the output"),
     ],
     title=title,
     description=description,
-    article=article,       
+    article=article,
     examples=[
-        ['01.png', True, True, 2, 0.7],
-        ['02.jpg', True, True, 2, 0.7],
-        ['03.jpg', True, True, 2, 0.7],
-        ['04.jpg', True, True, 2, 0.1],
-        ['05.jpg', True, True, 2, 0.1]
-      ]
-    ).launch()
+        ["01.png", True, True, 2, 0.7],
+        ["02.jpg", True, True, 2, 0.7],
+        ["03.jpg", True, True, 2, 0.7],
+        ["04.jpg", True, True, 2, 0.1],
+        ["05.jpg", True, True, 2, 0.1],
+    ],
+).launch()
 
 demo.queue(concurrency_count=4)
 demo.launch()

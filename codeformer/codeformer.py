@@ -6,8 +6,8 @@ import torch
 from torchvision.transforms.functional import normalize
 from basicsr.utils import img2tensor, tensor2img
 from basicsr.utils.download_util import load_file_from_url
-from facelib.utils.face_restoration_helper import FaceRestoreHelper
-from facelib.utils.misc import is_gray
+from codeformer.facelib.utils.face_restoration_helper import FaceRestoreHelper
+from codeformer.facelib.utils.misc import is_gray
 
 from basicsr.utils.registry import ARCH_REGISTRY
 from .realesrgan import realesrgan

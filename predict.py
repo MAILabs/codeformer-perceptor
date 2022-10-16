@@ -9,16 +9,17 @@ import tempfile
 import cv2
 import torch
 from torchvision.transforms.functional import normalize
+
 try:
     from cog import BasePredictor, Input, Path
 except Exception:
-    print('please install cog package')
+    print("please install cog package")
 
 from basicsr.utils import imwrite, img2tensor, tensor2img
 from basicsr.archs.rrdbnet_arch import RRDBNet
 from basicsr.utils.realesrgan_utils import RealESRGANer
 from basicsr.utils.registry import ARCH_REGISTRY
-from facelib.utils.face_restoration_helper import FaceRestoreHelper
+from codeformer.facelib.utils.face_restoration_helper import FaceRestoreHelper
 
 
 class Predictor(BasePredictor):
@@ -146,7 +147,7 @@ class Predictor(BasePredictor):
                 )
 
         # save restored img
-        out_path = Path(tempfile.mkdtemp()) / 'output.png'
+        out_path = Path(tempfile.mkdtemp()) / "output.png"
         imwrite(restored_img, str(out_path))
 
         return out_path
