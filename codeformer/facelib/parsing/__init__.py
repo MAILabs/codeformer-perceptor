@@ -11,7 +11,7 @@ def init_parsing_model(model_name="bisenet", half=False, device="cuda"):
         model_url = "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_bisenet.pth"
     elif model_name == "parsenet":
         model = ParseNet(in_size=512, out_size=512, parsing_ch=19)
-        model_url = "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth"
+        model_url = "https://s3.eu-central-1.wasabisys.com/nextml-model-data/codeformer/weights/facelib/parsing_parsenet.pth"
     else:
         raise NotImplementedError(f"{model_name} is not implemented.")
 

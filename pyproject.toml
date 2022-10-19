@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "codeformer-perceptor"
-version = "0.1.1"
+version = "0.1.2"
 description = "Towards Robust Blind Face Restoration with Codebook Lookup Transformer (NeurIPS 2022)"
 authors = ["Shangchen Zhou, Kelvin C.K. Chan, Chongyi Li, Chen Change Loy"]
 license = "S-Lab License 1.0"
