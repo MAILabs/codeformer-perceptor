@@ -3,7 +3,7 @@ import torch
 
 def realesrgan(bg_tile):
     from basicsr.archs.rrdbnet_arch import RRDBNet
-    from basicsr.utils.realesrgan_utils import RealESRGANer
+    from realesrgan import RealESRGANer
 
     cuda_is_available = torch.cuda.is_available()
     half = True if cuda_is_available else False
